@@ -1,0 +1,45 @@
+"""
+Created on Fri Mar 24 18:51:41 2017
+
+@author: JEnny
+
+GAME OF LIFE
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from matplotlib import animation
+#grid = np.random.randint(2, size=(50,50))
+#non = np.nonzero(grid)
+N = 100
+n = 50
+grid = np.zeros((N,N))
+int_state = np.random.randint(2, size=(n,n))
+int_state1 = np.random.randint(2, size=(n,N))
+#grid[1:1+n,1:1+n] = int_state #
+grid[50:,:N] = int_state1 #
+myobj = plt.matshow(grid, cmap=plt.cm.gray)
+new_state = np.zeros((N,N))
+
+for t in range(1,2000):
+    neighbor = np.zeros((N,N))
+    for i in range(1,N):
+        for j in range(1,N):
+            neighbor[i][j] = sum(sum(grid[i-1:i+2,j-1:j+2]))
+            if grid[i][j] == 1:
+                neighbor[i][j] = sum(sum(grid[i-1:i+2,j-1:j+2])) - 1
+    for i in range(1,N):
+        for j in range(1,N):
+            if grid[i][j] == 0 and neighbor[i][j] == 3:
+                new_state[i][j] = 1
+            elif grid[i][j] == 1 and neighbor[i][j] == 3:
+                new_state[i][j] = 1
+            elif grid[i][j] == 1 and neighbor[i][j] == 2:
+                new_state[i][j] = 1
+            else:
+                new_state[i][j] = 0         
+    grid = new_state
+    myobj.set_data(grid)
+    plt.draw()
+#    plt.pause(0.1)
